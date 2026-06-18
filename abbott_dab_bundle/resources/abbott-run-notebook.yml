@@ -1,0 +1,10 @@
+resources:
+  jobs:
+    abbott_run_notebook:
+      name: abbott-run-notebook
+      queue:
+        enabled: true
+      tasks:
+        - task_key: abbott-notebook-task
+          notebook_task:
+            notebook_path: /Workspace/Users/sithara.vanmerimeethal@databricks.com/abbott-dab-onboarding/abbott_dab_bundle/src/abbott_hello_world.ipynb
