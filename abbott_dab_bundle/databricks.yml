@@ -6,6 +6,18 @@ include:
   - resources/*.yml
   - resources/*/*.yml
 
+# Variables that can be referenced in source files using ${var.<name>}
+variables:
+  catalog:
+    description: "The Unity Catalog catalog to use"
+    default: "dev_catalog"
+  schema:
+    description: "The Unity Catalog schema to use"
+    default: "default"
+  warehouse_id:
+    description: "The SQL warehouse ID for execution"
+    default: ""
+
 targets:
   # The 'dev' target, for development purposes. This target is the default.
   dev:
@@ -13,15 +25,20 @@ targets:
     default: true
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
+    variables:
+      catalog: "dev_catalog"
+      schema: "dev_schema"
 
-  # The 'prod' target, used for production deployment.
-  prod:
-    mode: production
+  # The 'qa' target, used for QA/staging deployment in CI/CD pipeline.
+
+  qa:
+    mode: development
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
-      # We always use /Users/sithara.vanmerimeethal@databricks.com for all resources to make sure we only have a single copy.
       root_path: /Users/sithara.vanmerimeethal@databricks.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: "qa_catalog"
+      schema: "qa_schema"
     run_as:
-      # This runs as sithara.vanmerimeethal@databricks.com in production. We could also use a service principal here,
-      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: sithara.vanmerimeethal@databricks.com
+
